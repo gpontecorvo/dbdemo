@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Employee Result</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<!--/*@thymesVar id="employee" type="com.example.dbdemo.data.Employee"*/-->
+
+<body>
+<h1>Result</h1>
+<p th:text="'id: ' + ${employee.id}" />
+<p th:text="'Name: ' + ${employee.firstName} + ' ' + ${employee.lastName}"/>
+<a href="/employees">See Employee list</a>
+</body>
+</html>

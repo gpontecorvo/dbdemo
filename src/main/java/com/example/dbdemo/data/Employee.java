@@ -68,7 +68,7 @@ public class Employee {
     }
 
     public String getFormattedName() {
-        return String.format("%s %s %s", title, firstName, lastName).trim();
+        return String.format("%s, %s (%s)",lastName, firstName, title ).trim();
     }
 
 

@@ -11,12 +11,12 @@
 <form action="#" th:action="@{/employees/filter}" th:object="${employee}" method="get">
     <table>
         <tr>
-            <td>Last Name:</td>
-            <td><input type="text" th:field="*{lastName}"/></td>
-        </tr>
-        <tr>
             <td>First Name:</td>
             <td><input type="text" th:field="*{firstName}"/></td>
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td><input type="text" th:field="*{lastName}"/></td>
         </tr>
         <tr>
             <td>Email:</td>

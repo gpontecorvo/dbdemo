@@ -20,7 +20,7 @@ import java.util.Optional;
 class EmployeeController {
 
     @Autowired
-    private IEmployeeService service;
+    private EmployeeService service;
 
 
     @GetMapping
@@ -31,6 +31,33 @@ class EmployeeController {
         modelAndView.addObject("employees", theList);
         return modelAndView;
     }
+    @GetMapping("/filter")
+    public ModelAndView findByExample(@Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult,
+    HttpServletRequest request, Model model) throws IOException {
+
+        List<Employee> theList = service.searchEmployees(employee);
+        ModelAndView modelAndView = new ModelAndView("employeeList");
+        modelAndView.addObject("employees", theList);
+        return modelAndView;
+    }
+
+    @GetMapping("/search")
+    public ModelAndView search(@Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult,
+                                     HttpServletRequest request, Model model) throws IOException {
+        ModelAndView modelAndView = new ModelAndView("employeeForm");
+        if(bindingResult.hasErrors()) {
+            System.out.println("There was a error " + bindingResult);
+            modelAndView = new ModelAndView("searchForm");
+        }
+        else {
+            modelAndView = new ModelAndView("searchForm");
+            modelAndView.addObject("employee", employee);
+        }
+        return modelAndView;
+    }
+
+
+
 
     @GetMapping(value = "/{id}")
     public Employee findById(@PathVariable("id") Long id) {
@@ -41,7 +68,7 @@ class EmployeeController {
         return employee.get();
     }
 
-    @GetMapping("/employee")
+    @GetMapping( value={"/employee", "/employee/{id}"})
     public ModelAndView employeeForm(@Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult,
                                      HttpServletRequest request, Model model) throws IOException {
         ModelAndView modelAndView = new ModelAndView("employeeForm");
@@ -50,19 +77,21 @@ class EmployeeController {
             modelAndView = new ModelAndView("employeeList");
         }
         else {
+            Employee theEmp = employee;
+            if (employee.getId() != null) {
+                theEmp = findById(employee.getId());
+            }
             modelAndView = new ModelAndView("employeeForm");
-            modelAndView.addObject("employee", employee);
+            modelAndView.addObject("employee", theEmp);
         }
         return modelAndView;
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ModelAndView create(@ModelAttribute Employee employee) {
+    public ModelAndView createOrUpdate(@ModelAttribute Employee employee) {
         Preconditions.checkNotNull(employee);
-        employee.setId(null);
-        Employee emp = service.addEmployee(employee);
+        Employee emp = service.addOrModifyEmployee(employee);
         ModelAndView modelAndView = new ModelAndView("employeeResult");
 
         modelAndView.addObject("employee", emp);
@@ -70,18 +99,20 @@ class EmployeeController {
         return modelAndView;
     }
 
-    @PutMapping(value = "/{id}")
+    @GetMapping(value = "/delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable("id") Long id, @RequestBody Employee resource) {
-        Preconditions.checkNotNull(resource);
-        RestPreconditions.checkFound(service.getSingleEmployee(resource.getId()));
-        service.updateEmployee(resource);
-    }
+    public ModelAndView delete(@PathVariable("id") Long id) {
 
-    @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("id") Long id) {
+        Optional<Employee> employee = RestPreconditions.checkFound(service.getSingleEmployee(id));
+        if (!employee.isPresent()) {
+            throw new RuntimeException("Employee Id" + id + " not found.");
+        }
+
+        Employee theEmp = employee.get();
+        ModelAndView modelAndView = new ModelAndView("deleteResult");
+        modelAndView.addObject("employee", theEmp);
         service.deleteEmployee(id);
+        return modelAndView;
     }
 
 }

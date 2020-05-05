@@ -6,12 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface IEmployeeService {
+public interface EmployeeService {
     @Transactional
     List<Employee> getEmployees();
 
     @Transactional
-    Employee addEmployee(Employee employee);
+    Employee addOrModifyEmployee(Employee employee);
 
     @Transactional
     Employee updateEmployee(Employee employee);
@@ -21,4 +21,9 @@ public interface IEmployeeService {
 
     @Transactional
     void deleteEmployee(long theId);
+
+    @Transactional
+    List<Employee> searchEmployees(Employee searchEmployee);
+
 }
+

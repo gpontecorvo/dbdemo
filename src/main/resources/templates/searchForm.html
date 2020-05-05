@@ -1,27 +1,22 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Employee Input</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Search Employees</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <!--/*@thymesVar id="employee" type="com.example.dbdemo.data.Employee"*/-->
 <body>
-<h3 th:text="${employee.id == null ? 'Create New Employee' : 'Update Employee'}"></h3>
-<form action="#" th:action="@{/employees}" th:object="${employee}" method="post">
-
+<h3>Search Employees</h3>
+<form action="#" th:action="@{/employees/filter}" th:object="${employee}" method="get">
     <table>
         <tr>
-            <td>Title:</td>
-            <td><input type="text" th:field="*{title}"/></td>
+            <td>Last Name:</td>
+            <td><input type="text" th:field="*{lastName}"/></td>
         </tr>
         <tr>
             <td>First Name:</td>
             <td><input type="text" th:field="*{firstName}"/></td>
-        </tr>
-        <tr>
-            <td>Last Name:</td>
-            <td><input type="text" th:field="*{lastName}"/></td>
         </tr>
         <tr>
             <td>Email:</td>
@@ -33,16 +28,12 @@
         </tr>
         <tr>
             <td colspan="2">
-                <button class="button" type="submit">Submit</button>&nbsp;<button
-                    class="button" type="reset">Reset</button>
+                <button class="button" type="submit">Search</button>&nbsp;<button
+                        class="button" type="reset">Reset</button>
             </td>
         </tr>
     </table>
-    <input type="hidden" th:field="*{id}" />
     <div th:replace="navigation :: navigation"></div>
-
-
-
 </form>
 </body>
 </html>

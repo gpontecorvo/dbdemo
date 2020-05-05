@@ -2,29 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
 
+<!--/*@thymesVar id="employees" type="List<com.example.dbdemo.data.Employee>"*/-->
 
 <div th:if="${ #lists.isEmpty(employees)}">
     No Employees
 </div>
+
 <div th:if="${not #lists.isEmpty(employees)}">
-    <h2>Employess</h2>
+    <h3>Employees</h3>
     <table>
         <tr>
-            <th>Title</th> <th>First Name</th> <th>Last Name</th> <th>Email</th> <th>Age</th>
+<!--           <th></th>-->
+            <th>Id</th> <th>Actions</th><th>Name</th> <th>Email</th> <th>Age</th>
         </tr>
         <tr th:each="emp : ${employees}">
-            <td th:text="${emp.title}"></td>
-            <td th:text="${emp.firstName}"></td>
-            <td th:text="${emp.lastName}"></td>
+            <td th:text="${emp.id}"> </td>
+            <td>
+                <a th:href="@{/employees/employee/{id}(id=${emp.id})}"><button class="button" type="button">Edit</button></a>&nbsp;<a
+                    th:href="@{/employees/delete/{id}(id=${emp.id})}"><button class="button" type="button">Delete</button>
+                </a>
+            </td>
+            <td th:text="${emp.formattedName}"></td>
             <td th:text="${emp.email}"></td>
             <td th:text="${emp.age}"></td>
         </tr>
+
     </table>
 </div>
+<div th:replace="navigation :: navigation"></div>
+
 
 </body>
 </html>

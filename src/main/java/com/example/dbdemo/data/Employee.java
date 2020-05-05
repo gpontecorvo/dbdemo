@@ -1,5 +1,7 @@
 package com.example.dbdemo.data;
 
+import lombok.Getter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,7 @@ public class Employee {
     private String lastName;
     private String email;
     private String title;
-    private int age;
+    private Integer age;
 
     public Long getId() {
         return id;
@@ -41,11 +43,11 @@ public class Employee {
         this.title = title;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -64,4 +66,10 @@ public class Employee {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String getFormattedName() {
+        return String.format("%s %s %s", title, firstName, lastName).trim();
+    }
+
+
 }
